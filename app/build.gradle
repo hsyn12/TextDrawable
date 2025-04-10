@@ -1,0 +1,64 @@
+plugins {
+    alias(libs.plugins.android.application)
+    id 'maven-publish'
+}
+
+android {
+    namespace 'com.tr.xyz.textdrawable'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.tr.xyz.textdrawable"
+        minSdk 28
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+dependencies {
+
+    implementation libs.appcompat
+    implementation libs.material
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+}
+
+group = "com.github.hsyn12"
+version = "1.0.2"
+def artifactId = 'textdrawable'
+
+publishing {
+    publications {
+        gpr(MavenPublication) {
+            artifact("${project.buildDir}/outputs/aar/${artifactId}-release.aar")
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'GitHubPackages'
+            url = uri('https://maven.pkg.github.com/hsyn12/TextDrawable')
+            credentials {
+                username = System.getenv('GITHUB_ACTOR')
+                password = System.getenv('GITHUB_TOKEN')
+            }
+        }
+    }
+}
+
+
